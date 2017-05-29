@@ -4,7 +4,7 @@
   "description": "",
   "main": "./main.js",
   "scripts": {
-    "test": "mocha *.test.js"
+    "test": "eslint . && mocha *.test.js"
   },
   "author": "Josa Gesell <josa@gesell.me>",
   "license": "MIT",
