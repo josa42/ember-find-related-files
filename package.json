@@ -4,7 +4,7 @@
   "description": "",
   "main": "./main.js",
   "scripts": {
-    "test": "eslint . && mocha *.test.js"
+    "test": "eslint . && mocha tests/**/*.test.js"
   },
   "author": "Josa Gesell <josa@gesell.me>",
   "license": "MIT",
@@ -16,5 +16,8 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "mocha": "^3.4.2"
+  },
+  "dependencies": {
+    "glob": "^7.1.2"
   }
 }

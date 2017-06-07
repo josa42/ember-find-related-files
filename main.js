@@ -2,6 +2,7 @@
 
 const fs = require('fs')
 const path = require('path')
+const glob = require('glob')
 const { join } = require('path')
 
 const groups = [
@@ -65,20 +66,17 @@ function detectHostType (rootPath) {
   return HOST_TYPE_CACHE[hostPath]
 }
 
-// export function detectType(path): IType {
-function detectType (rootPath, path) {
+function detectType (rootPath, filePath) {
   return types
     .map((type) => {
-      const module = type.module
-      const exp = type.exp
-      const m = path.match(exp)
+      const m = filePath.match(type.exp)
 
       if (m) {
         const hostType = m[1] || detectHostType(rootPath)
         const part = m[2]
         const ext = m[3]
 
-        return { hostType, path, part, key: `${module}-${ext}` }
+        return { hostType, path: filePath, part, key: `${type.module}-${ext}` }
       }
     })
     .find((type) => Boolean(type))
@@ -111,6 +109,18 @@ function getPath (sourceType, typeKey) {
     default:
       return `${hostType}/${type}s/${part}.${ext}`
   }
+}
+
+function pathToLabel (typeKey, filePath) {
+  const typeDef = types.find(({ module }) => module === typeKey)
+  if (typeDef) {
+    const match = filePath.match(typeDef.exp)
+    if (match) {
+      return match[2]
+    }
+  }
+
+  return filePath
 }
 
 function typeKeyToLabel (typeKey) {
@@ -198,6 +208,43 @@ function findRelatedFiles (rootPath, filePath) {
     .filter(({ path: filePath }) => fs.existsSync(path.join(rootPath, filePath)))
 }
 
+async function findType (rootPath, type) {
+  let files = []
+
+  switch (type) {
+    case 'adapter':
+    case 'component':
+    case 'controller':
+    case 'helper':
+    case 'initializer':
+    case 'mixin':
+    case 'model':
+    case 'route':
+    case 'serializer':
+    case 'service':
+    case 'util':
+      files = await globItems(rootPath, `+(app|addon)/${type}s/**/*.js`)
+      break
+  }
+
+  return files.map((filePath) => ({
+    label: pathToLabel(type, filePath),
+    path: filePath
+  }))
+}
+
+function globItems (rootPath, pattern) {
+  return new Promise((resolve, reject) => {
+    glob(pattern, { cwd: rootPath }, (error, files) => {
+      if (error) {
+        return reject(error)
+      }
+
+      resolve(files)
+    })
+  })
+}
+
 // Deprecated exports
 module.exports = (...args) => {
   console.log('[ember-find-related-files] Default export is deprecated. Use findRelatedFiles instead.')
@@ -205,6 +252,7 @@ module.exports = (...args) => {
 }
 
 module.exports.findRelatedFiles = findRelatedFiles
+module.exports.findType = findType
 
 // Export for tests
 module.exports.getRelatedTypeKeys = getRelatedTypeKeys
