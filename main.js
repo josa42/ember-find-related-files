@@ -185,7 +185,7 @@ function typeKeyToLabel (typeKey) {
   return typeKey
 }
 
-module.exports = function findRelatedFiles (rootPath, filePath) {
+function findRelatedFiles (rootPath, filePath) {
   const type = detectType(rootPath, filePath)
 
   if (!type) { return [] }
@@ -197,6 +197,14 @@ module.exports = function findRelatedFiles (rootPath, filePath) {
     }))
     .filter(({ path: filePath }) => fs.existsSync(path.join(rootPath, filePath)))
 }
+
+// Deprecated exports
+module.exports = (...args) => {
+  console.log('[ember-find-related-files] Default export is deprecated. Use findRelatedFiles instead.')
+  return findRelatedFiles(...args)
+}
+
+module.exports.findRelatedFiles = findRelatedFiles
 
 // Export for tests
 module.exports.getRelatedTypeKeys = getRelatedTypeKeys
