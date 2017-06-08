@@ -1,7 +1,7 @@
 # ember-find-related-files
 
-![](https://travis-ci.org/josa42/ember-find-related-files.svg?branch=master)
-![](https://img.shields.io/npm/v/ember-find-related-files.svg)
+[![](https://img.shields.io/npm/v/ember-find-related-files.svg)](https://www.npmjs.com/package/ember-find-related-files)
+[![](https://travis-ci.org/josa42/ember-find-related-files.svg?branch=master)](https://travis-ci.org/josa42/ember-find-related-files)
 
 Find related files in an EmberJS project directory.
 
