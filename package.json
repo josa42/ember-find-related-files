@@ -4,18 +4,21 @@
   "description": "",
   "main": "./main.js",
   "scripts": {
-    "test": "eslint . && mocha tests/**/*.test.js"
+    "test": "eslint . && mocha tests/**/*.test.js",
+    "report-coverage": "nyc mocha --reporter min tests/**/*.test.js > /dev/null && nyc report --reporter=lcov > coverage.lcov && codecov"
   },
   "author": "Josa Gesell <josa@gesell.me>",
   "license": "MIT",
   "devDependencies": {
+    "codecov": "^2.2.0",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.3.0",
     "eslint-plugin-node": "^4.2.2",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
-    "mocha": "^3.4.2"
+    "mocha": "^3.4.2",
+    "nyc": "^11.0.2"
   },
   "dependencies": {
     "glob": "^7.1.2"
