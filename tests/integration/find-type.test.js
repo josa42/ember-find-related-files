@@ -8,6 +8,7 @@ const addonRoot = path.join(__dirname, '..', 'fixtures', 'example-addon')
 describe('Integration tests - findType()', () => {
   it('works for Component in apps', async () => {
     assert.deepEqual(await findType(appRoot, 'component'), [
+      { label: 'bar/component',             path: 'app/components/bar/component.js' },
       { label: 'example/foo-bar', path: 'app/components/example/foo-bar.js' },
       { label: 'foo-bar',         path: 'app/components/foo-bar.js' }
     ])

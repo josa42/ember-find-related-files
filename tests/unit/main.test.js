@@ -13,6 +13,15 @@ describe('Unit tests', () => {
       assert.equal(getPath(source, 'component-integration-js'), 'tests/integration/components/foo-test.js')
     })
 
+    it('Pod Components paths', () => {
+      assert.equal(getPath(source, 'pod-component-js'), 'app/components/foo/component.js')
+      assert.equal(getPath(source, 'pod-component-template-hbs'), 'app/components/foo/template.hbs')
+      assert.equal(getPath(source, 'pod-component-style-scss'), 'app/components/foo/style.scss')
+      assert.equal(getPath(source, 'pod-component-style-sass'), 'app/components/foo/style.sass')
+      assert.equal(getPath(source, 'pod-component-unit-js'), 'tests/unit/components/foo/component-test.js')
+      assert.equal(getPath(source, 'pod-component-integration-js'), 'tests/integration/components/foo/component-test.js')
+    })
+
     it('Controller paths', () => {
       assert.equal(getPath(source, 'controller-js'),             'app/controllers/foo.js')
       assert.equal(getPath(source, 'controller-template-hbs'),   'app/templates/foo.hbs')
@@ -84,6 +93,15 @@ describe('Unit tests', () => {
       assert.deepEqual(detectType('/foo', 'tests/integration/components/foo-test.js'),  { hostType: 'app', path: 'tests/integration/components/foo-test.js', part: 'foo', key: 'component-integration-js' })
     })
 
+    it('Pod Component and related types', () => {
+      assert.deepEqual(detectType('/foo', 'app/components/foo/component.js'),                     { hostType: 'app', path: 'app/components/foo/component.js', part: 'foo', key: 'pod-component-js' })
+      assert.deepEqual(detectType('/foo', 'app/components/foo/template.hbs'),                     { hostType: 'app', path: 'app/components/foo/template.hbs', part: 'foo', key: 'pod-component-template-hbs' })
+      assert.deepEqual(detectType('/foo', 'app/components/foo/style.scss'),                       { hostType: 'app', path: 'app/components/foo/style.scss', part: 'foo', key: 'pod-component-style-scss' })
+      assert.deepEqual(detectType('/foo', 'app/components/foo/style.sass'),                       { hostType: 'app', path: 'app/components/foo/style.sass', part: 'foo', key: 'pod-component-style-sass' })
+      assert.deepEqual(detectType('/foo', 'tests/unit/components/foo/component-test.js'),         { hostType: 'app', path: 'tests/unit/components/foo/component-test.js', part: 'foo', key: 'pod-component-unit-js' })
+      assert.deepEqual(detectType('/foo', 'tests/integration/components/foo/component-test.js'),  { hostType: 'app', path: 'tests/integration/components/foo/component-test.js', part: 'foo', key: 'pod-component-integration-js' })
+    })
+
     it('Route and related types', () => {
       assert.deepEqual(detectType('/foo', 'app/routes/foo.js'),                         { hostType: 'app', path: 'app/routes/foo.js', part: 'foo', key: 'route-js' })
       assert.deepEqual(detectType('/foo', 'tests/unit/routes/foo-test.js'),             { hostType: 'app', path: 'tests/unit/routes/foo-test.js', part: 'foo', key: 'route-unit-js' })
@@ -148,7 +166,14 @@ describe('Unit tests', () => {
 
   describe('getRelatedTypeKeys()', () => {
     it('Component and related types', () => {
-      const types = ['component-js', 'component-template-hbs', 'component-style-scss', 'component-unit-js', 'component-integration-js']
+      const types = ['component-js', 'component-template-hbs', 'component-style-css', 'component-style-sass', 'component-style-scss', 'component-unit-js', 'component-integration-js']
+      types.forEach((type) => {
+        assert.deepEqual(getRelatedTypeKeys(type), types.filter((iType) => iType !== type))
+      })
+    })
+
+    it('Pod Component and related types', () => {
+      const types = ['pod-component-js', 'pod-component-template-hbs', 'pod-component-style-css', 'pod-component-style-sass', 'pod-component-style-scss', 'pod-component-unit-js', 'pod-component-integration-js']
       types.forEach((type) => {
         assert.deepEqual(getRelatedTypeKeys(type), types.filter((iType) => iType !== type))
       })

@@ -6,7 +6,8 @@ const glob = require('glob')
 const { join } = require('path')
 
 const groups = [
-  ['component-js', 'component-template-hbs', 'component-style-scss', 'component-unit-js', 'component-integration-js'],
+  ['pod-component-js', 'pod-component-template-hbs', 'pod-component-style-css', 'pod-component-style-sass', 'pod-component-style-scss', 'pod-component-unit-js', 'pod-component-integration-js'],
+  ['component-js', 'component-template-hbs', 'component-style-css', 'component-style-sass', 'component-style-scss', 'component-unit-js', 'component-integration-js'],
   ['controller-js', 'controller-template-hbs', 'route-js', 'controller-unit-js', 'controller-integration-js', 'route-unit-js', 'route-integration-js'],
   ['mixin-js', 'mixin-unit-js', 'mixin-integration-js'],
   ['model-js', 'model-unit-js', 'model-integration-js', 'adapter-js', 'adapter-unit-js', 'adapter-integration-js', 'serializer-js', 'serializer-unit-js', 'serializer-integration-js'],
@@ -17,9 +18,14 @@ const groups = [
 ]
 
 const types = [
+  { module: 'pod-component', exp: /^(app|addon)\/components\/(.+)\/component\.(js)$/ },
+  { module: 'pod-component-template', exp: /^(app|addon)\/components\/(.+)\/template\.(hbs)$/ },
+  { module: 'pod-component-style', exp: /^(app|addon)\/components\/(.+)\/style\.(css|sass|scss)$/ },
+  { module: 'pod-component-unit', exp: /^()tests\/unit\/components\/(.+)\/component-test\.(js)$/ },
+  { module: 'pod-component-integration', exp: /^()tests\/integration\/components\/(.+)\/component-test\.(js)$/ },
   { module: 'component', exp: /^(app|addon)\/components\/(.+)\.(js)$/ },
   { module: 'component-template', exp: /^(app|addon)\/templates\/components\/(.+)\.(hbs)$/ },
-  { module: 'component-style', exp: /^(app|addon)\/styles\/components\/(.+)\.(scss)$/ },
+  { module: 'component-style', exp: /^(app|addon)\/styles\/components\/(.+)\.(css|sass|scss)$/ },
   { module: 'component-unit', exp: /^()tests\/unit\/components\/(.+)-test\.(js)$/ },
   { module: 'component-integration', exp: /^()tests\/integration\/components\/(.+)-test\.(js)$/ },
   { module: 'route', exp: /^(app|addon)\/routes\/(.+)\.(js)$/ },
@@ -90,24 +96,32 @@ function getRelatedTypeKeys (typeKey) {
 
 function getPath (sourceType, typeKey) {
   const { hostType, part } = sourceType
-  const [ , type, , subtype, ext ] = typeKey.match(/^([a-z]+)(-([a-z]+))?-([a-z]+)$/)
+  const [ , , pod, type, , subtype, ext ] = typeKey.match(/^((pod)-)?([a-z]+)(-([a-z]+))?-([a-z]+)$/)
 
-  switch (subtype) {
-    case 'integration':
-    case 'unit':
-      return `tests/${subtype}/${type}s/${part}-test.${ext}`
-
-    case 'style':
-      return `${hostType}/styles/${type}s/${part}.${ext}`
-
-    case 'template':
-      if (type === 'controller') {
-        return `${hostType}/templates/${part}.${ext}`
-      }
-      return `${hostType}/templates/${type}s/${part}.${ext}`
-
-    default:
-      return `${hostType}/${type}s/${part}.${ext}`
+  if (pod) {
+    switch (subtype) {
+      case 'integration':
+      case 'unit':
+        return `tests/${subtype}/${type}s/${part}/${type}-test.${ext}`
+      default:
+        return `${hostType}/components/${part}/${subtype || type}.${ext}`
+    }
+  } else {
+    switch (subtype) {
+      case 'integration':
+      case 'unit':
+        return `tests/${subtype}/${type}s/${part}-test.${ext}`
+      case 'style':
+        return `${hostType}/styles/${type}s/${part}.${ext}`
+      case 'template':
+        if (type === 'controller') {
+          return `${hostType}/templates/${part}.${ext}`
+        } else {
+          return `${hostType}/templates/${type}s/${part}.${ext}`
+        }
+      default:
+        return `${hostType}/${type}s/${part}.${ext}`
+    }
   }
 }
 
@@ -125,9 +139,13 @@ function pathToLabel (typeKey, filePath) {
 
 function typeKeyToLabel (typeKey) {
   switch (typeKey) {
+    case 'pod-component-js':
     case 'component-js':
       return 'Component'
 
+    case 'pod-component-style-scss':
+    case 'pod-component-style-sass':
+    case 'pod-component-style-css':
     case 'component-style-scss':
       return 'Stylesheet'
 
@@ -161,10 +179,12 @@ function typeKeyToLabel (typeKey) {
     case 'initializer-js':
       return 'Initializer'
 
+    case 'pod-component-template-hbs':
     case 'component-template-hbs':
     case 'controller-template-hbs':
       return 'Template'
 
+    case 'pod-component-unit-js':
     case 'component-unit-js':
     case 'route-unit-js':
     case 'controller-unit-js':
@@ -178,6 +198,7 @@ function typeKeyToLabel (typeKey) {
     case 'initializer-unit-js':
       return 'Unit Test'
 
+    case 'pod-component-integration-js':
     case 'component-integration-js':
     case 'route-integration-js':
     case 'controller-integration-js':

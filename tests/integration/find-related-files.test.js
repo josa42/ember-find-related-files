@@ -52,6 +52,71 @@ describe('Integration tests - findRelatedFiles()', () => {
     })
   })
 
+  describe('Pod Component', () => {
+    it('works for implementations', () => {
+      assert.deepEqual(findRelatedFiles(appRoot, 'app/components/bar/component.js'), [
+        { label: 'Template',         path: 'app/components/bar/template.hbs' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.css' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.sass' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.scss' },
+        { label: 'Unit Test',        path: 'tests/unit/components/bar/component-test.js' },
+        { label: 'Integration Test', path: 'tests/integration/components/bar/component-test.js' }
+      ])
+    })
+
+    it('works for templates', () => {
+      assert.deepEqual(findRelatedFiles(appRoot, 'app/components/bar/template.hbs'), [
+        { label: 'Component',        path: 'app/components/bar/component.js' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.css' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.sass' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.scss' },
+        { label: 'Unit Test',        path: 'tests/unit/components/bar/component-test.js' },
+        { label: 'Integration Test', path: 'tests/integration/components/bar/component-test.js' }
+      ])
+    })
+
+    it('works for styles', () => {
+      assert.deepEqual(findRelatedFiles(appRoot, 'app/components/bar/style.sass'), [
+        { label: 'Component',        path: 'app/components/bar/component.js' },
+        { label: 'Template',         path: 'app/components/bar/template.hbs' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.css' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.scss' },
+        { label: 'Unit Test',        path: 'tests/unit/components/bar/component-test.js' },
+        { label: 'Integration Test', path: 'tests/integration/components/bar/component-test.js' }
+      ])
+      assert.deepEqual(findRelatedFiles(appRoot, 'app/components/bar/style.scss'), [
+        { label: 'Component',        path: 'app/components/bar/component.js' },
+        { label: 'Template',         path: 'app/components/bar/template.hbs' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.css' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.sass' },
+        { label: 'Unit Test',        path: 'tests/unit/components/bar/component-test.js' },
+        { label: 'Integration Test', path: 'tests/integration/components/bar/component-test.js' }
+      ])
+    })
+
+    it('works for unit tests', () => {
+      assert.deepEqual(findRelatedFiles(appRoot, 'tests/unit/components/bar/component-test.js'), [
+        { label: 'Component',        path: 'app/components/bar/component.js' },
+        { label: 'Template',         path: 'app/components/bar/template.hbs' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.css' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.sass' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.scss' },
+        { label: 'Integration Test', path: 'tests/integration/components/bar/component-test.js' }
+      ])
+    })
+
+    it('works for integration test', () => {
+      assert.deepEqual(findRelatedFiles(appRoot, 'tests/integration/components/bar/component-test.js'), [
+        { label: 'Component',        path: 'app/components/bar/component.js' },
+        { label: 'Template',         path: 'app/components/bar/template.hbs' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.css' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.sass' },
+        { label: 'Stylesheet',       path: 'app/components/bar/style.scss' },
+        { label: 'Unit Test',        path: 'tests/unit/components/bar/component-test.js' }
+      ])
+    })
+  })
+
   describe('Route', () => {
     it('works for implementations', () => {
       assert.deepEqual(findRelatedFiles(appRoot, 'app/routes/foo-bar.js'), [
