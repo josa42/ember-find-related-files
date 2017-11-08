@@ -95,19 +95,19 @@ function getPath (sourceType, typeKey) {
   switch (subtype) {
     case 'integration':
     case 'unit':
-      return `tests/${subtype}/${type}s/${part}-test.${ext}`
+      return path.join('tests', subtype, `${type}s`, `${part}-test.${ext}`)
 
     case 'style':
-      return `${hostType}/styles/${type}s/${part}.${ext}`
+      return path.join(hostType, 'styles', `${type}s`, `${part}.${ext}`)
 
     case 'template':
       if (type === 'controller') {
-        return `${hostType}/templates/${part}.${ext}`
+        return path.join(hostType, 'templates', `${part}.${ext}`)
       }
-      return `${hostType}/templates/${type}s/${part}.${ext}`
+      return path.join(hostType, 'templates', `${type}s`, `${part}.${ext}`)
 
     default:
-      return `${hostType}/${type}s/${part}.${ext}`
+      return path.join(hostType, `${type}s`, `${part}.${ext}`)
   }
 }
 
