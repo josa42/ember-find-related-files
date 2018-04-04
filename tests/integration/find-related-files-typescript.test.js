@@ -4,6 +4,8 @@ const { findRelatedFiles } = require('../../main')
 
 const appRoot = path.join(__dirname, '..', 'fixtures', 'example-app-ts')
 
+const { describe, it } = global
+
 describe('Integration tests - findRelatedFiles()', () => {
   describe('Component', () => {
     it('works for implementations', () => {

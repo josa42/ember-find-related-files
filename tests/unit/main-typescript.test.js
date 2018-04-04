@@ -1,6 +1,8 @@
 const assert = require('assert')
 const { getPath, detectType, getRelatedTypeKeys } = require('../../main')
 
+const { describe, it } = global
+
 describe('Unit tests', () => {
   describe('getPath()', () => {
     const source = { hostType: 'app', key: '', path: '', part: 'foo' }
@@ -148,7 +150,7 @@ describe('Unit tests', () => {
 
   describe('getRelatedTypeKeys()', () => {
     it('Component and related types', () => {
-      const types = ['component-js', 'component-template-hbs', 'component-style-scss', 'component-unit-js', 'component-integration-js', 'component-ts', 'component-unit-ts', 'component-integration-ts']
+      const types = ['component-js', 'component-template-hbs', 'component-style-css', 'component-style-sass', 'component-style-scss', 'component-unit-js', 'component-integration-js', 'component-ts', 'component-unit-ts', 'component-integration-ts']
       types.forEach((type) => {
         assert.deepEqual(getRelatedTypeKeys(type), types.filter((iType) => iType !== type))
       })

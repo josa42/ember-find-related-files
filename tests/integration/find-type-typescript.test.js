@@ -5,6 +5,8 @@ const { findType } = require('../../main')
 const appRoot = path.join(__dirname, '..', 'fixtures', 'example-app-ts')
 const addonRoot = path.join(__dirname, '..', 'fixtures', 'example-addon-ts')
 
+const { describe, it } = global
+
 describe('Integration tests - findType()', () => {
   it('works for Component in apps', async () => {
     assert.deepEqual(await findType(appRoot, 'component'), [
