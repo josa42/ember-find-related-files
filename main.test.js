@@ -150,56 +150,56 @@ describe('Ember Related Files Extension', () => {
 
   describe('getRelatedTypeKeys()', () => {
     it('should get related types for component and related types', () => {
-      const types = ['component-js', 'component-template-hbs', 'component-style-scss', 'component-unit-js', 'component-integration-js']
+      const types = ['component-js', 'component-template-hbs', 'component-style-scss', 'component-unit-js', 'component-integration-js', 'component-ts', 'component-unit-ts', 'component-integration-ts']
       types.forEach((type) => {
         assert.deepEqual(getRelatedTypeKeys(type), types.filter((iType) => iType !== type))
       })
     })
 
     it('should get related types for controller and related types', () => {
-      const types = ['controller-js', 'controller-template-hbs', 'route-js', 'controller-unit-js', 'controller-integration-js', 'route-unit-js', 'route-integration-js']
+      const types = ['controller-js', 'controller-template-hbs', 'route-js', 'controller-unit-js', 'controller-integration-js', 'route-unit-js', 'route-integration-js', 'controller-ts', 'route-ts', 'controller-unit-ts', 'controller-integration-ts', 'route-unit-ts', 'route-integration-ts']
       types.forEach((type) => {
         assert.deepEqual(getRelatedTypeKeys(type), types.filter((iType) => iType !== type))
       })
     })
 
     it('should get related types for mixin and related types', () => {
-      const types = ['mixin-js', 'mixin-unit-js', 'mixin-integration-js']
+      const types = ['mixin-js', 'mixin-unit-js', 'mixin-integration-js', 'mixin-ts', 'mixin-unit-ts', 'mixin-integration-ts']
       types.forEach((type) => {
         assert.deepEqual(getRelatedTypeKeys(type), types.filter((iType) => iType !== type))
       })
     })
 
     it('should get related types for model and related types', () => {
-      const types = ['model-js', 'model-unit-js', 'model-integration-js', 'adapter-js', 'adapter-unit-js', 'adapter-integration-js', 'serializer-js', 'serializer-unit-js', 'serializer-integration-js']
+      const types = ['model-js', 'model-unit-js', 'model-integration-js', 'adapter-js', 'adapter-unit-js', 'adapter-integration-js', 'serializer-js', 'serializer-unit-js', 'serializer-integration-js', 'model-ts', 'model-unit-ts', 'model-integration-ts', 'adapter-ts', 'adapter-unit-ts', 'adapter-integration-ts', 'serializer-ts', 'serializer-unit-ts', 'serializer-integration-ts']
       types.forEach((type) => {
         assert.deepEqual(getRelatedTypeKeys(type), types.filter((iType) => iType !== type))
       })
     })
 
     it('should get related types for util and related types', () => {
-      const types = ['util-js', 'util-unit-js', 'util-integration-js']
+      const types = ['util-js', 'util-unit-js', 'util-integration-js', 'util-ts', 'util-unit-ts', 'util-integration-ts']
       types.forEach((type) => {
         assert.deepEqual(getRelatedTypeKeys(type), types.filter((iType) => iType !== type))
       })
     })
 
     it('should get related types for helper and related types', () => {
-      const types = ['helper-js', 'helper-unit-js', 'helper-integration-js']
+      const types = ['helper-js', 'helper-unit-js', 'helper-integration-js', 'helper-ts', 'helper-unit-ts', 'helper-integration-ts']
       types.forEach((type) => {
         assert.deepEqual(getRelatedTypeKeys(type), types.filter((iType) => iType !== type))
       })
     })
 
     it('should get related types for service and related types', () => {
-      const types = ['service-js', 'service-unit-js', 'service-integration-js']
+      const types = ['service-js', 'service-unit-js', 'service-integration-js', 'service-ts', 'service-unit-ts', 'service-integration-ts']
       types.forEach((type) => {
         assert.deepEqual(getRelatedTypeKeys(type), types.filter((iType) => iType !== type))
       })
     })
 
     it('should get related types for initializer and related types', () => {
-      const types = ['initializer-js', 'initializer-unit-js', 'initializer-integration-js']
+      const types = ['initializer-js', 'initializer-unit-js', 'initializer-integration-js', 'initializer-ts', 'initializer-unit-ts', 'initializer-integration-ts']
       types.forEach((type) => {
         assert.deepEqual(getRelatedTypeKeys(type), types.filter((iType) => iType !== type))
       })

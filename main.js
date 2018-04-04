@@ -14,45 +14,48 @@ const groups = [
   ['helper-js', 'helper-unit-js', 'helper-integration-js'],
   ['service-js', 'service-unit-js', 'service-integration-js'],
   ['initializer-js', 'initializer-unit-js', 'initializer-integration-js']
-]
+].map(group => {
+  const typescript = group.filter(i => i.endsWith('-js')).map(jsItem => jsItem.replace('-js', '-ts'))
+  return group.concat(typescript)
+})
 
 const types = [
-  { module: 'component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\.(js)$/ },
+  { module: 'component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\.(js|ts)$/ },
   { module: 'component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/templates\/components\/(.+)\.(hbs)$/ },
   { module: 'component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/styles\/components\/(.+)\.(scss)$/ },
-  { module: 'component-unit', exp: /^()tests\/unit\/components\/(.+)-test\.(js)$/ },
-  { module: 'component-integration', exp: /^()tests\/integration\/components\/(.+)-test\.(js)$/ },
-  { module: 'route', exp: /^(app|addon|lib\/(?:.+)\/addon)\/routes\/(.+)\.(js)$/ },
-  { module: 'route-unit', exp: /^()tests\/unit\/routes\/(.+)-test\.(js)$/ },
-  { module: 'route-integration', exp: /^()tests\/integration\/routes\/(.+)-test\.(js)$/ },
-  { module: 'controller', exp: /^(app|addon|lib\/(?:.+)\/addon)\/controllers\/(.+)\.(js)$/ },
-  { module: 'controller-unit', exp: /^()tests\/unit\/controllers\/(.+)-test\.(js)$/ },
-  { module: 'controller-integration', exp: /^()tests\/integration\/controllers\/(.+)-test\.(js)$/ },
+  { module: 'component-unit', exp: /^()tests\/unit\/components\/(.+)-test\.(js|ts)$/ },
+  { module: 'component-integration', exp: /^()tests\/integration\/components\/(.+)-test\.(js|ts)$/ },
+  { module: 'route', exp: /^(app|addon|lib\/(?:.+)\/addon)\/routes\/(.+)\.(js|ts)$/ },
+  { module: 'route-unit', exp: /^()tests\/unit\/routes\/(.+)-test\.(js|ts)$/ },
+  { module: 'route-integration', exp: /^()tests\/integration\/routes\/(.+)-test\.(js|ts)$/ },
+  { module: 'controller', exp: /^(app|addon|lib\/(?:.+)\/addon)\/controllers\/(.+)\.(js|ts)$/ },
+  { module: 'controller-unit', exp: /^()tests\/unit\/controllers\/(.+)-test\.(js|ts)$/ },
+  { module: 'controller-integration', exp: /^()tests\/integration\/controllers\/(.+)-test\.(js|ts)$/ },
   { module: 'controller-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/templates\/(.+)\.(hbs)$/ },
-  { module: 'model', exp: /^(app|addon|lib\/(?:.+)\/addon)\/models\/(.+)\.(js)$/ },
-  { module: 'model-unit', exp: /^()tests\/unit\/models\/(.+)-test\.(js)$/ },
-  { module: 'model-integration', exp: /^()tests\/integration\/models\/(.+)-test\.(js)$/ },
-  { module: 'util', exp: /^(app|addon|lib\/(?:.+)\/addon)\/utils\/(.+)\.(js)$/ },
-  { module: 'util-unit', exp: /^()tests\/unit\/utils\/(.+)-test\.(js)$/ },
-  { module: 'util-integration', exp: /^()tests\/integration\/utils\/(.+)-test\.(js)$/ },
-  { module: 'helper', exp: /^(app|addon|lib\/(?:.+)\/addon)\/helpers\/(.+)\.(js)$/ },
-  { module: 'helper-unit', exp: /^()tests\/unit\/helpers\/(.+)-test\.(js)$/ },
-  { module: 'helper-integration', exp: /^()tests\/integration\/helpers\/(.+)-test\.(js)$/ },
-  { module: 'mixin', exp: /^(app|addon|lib\/(?:.+)\/addon)\/mixins\/(.+)\.(js)$/ },
-  { module: 'mixin-unit', exp: /^()tests\/unit\/mixins\/(.+)-test\.(js)$/ },
-  { module: 'mixin-integration', exp: /^()tests\/integration\/mixins\/(.+)-test\.(js)$/ },
-  { module: 'adapter', exp: /^(app|addon|lib\/(?:.+)\/addon)\/adapters\/(.+)\.(js)$/ },
-  { module: 'adapter-unit', exp: /^()tests\/unit\/adapters\/(.+)-test\.(js)$/ },
-  { module: 'adapter-integration', exp: /^()tests\/integration\/adapters\/(.+)-test\.(js)$/ },
-  { module: 'serializer', exp: /^(app|addon|lib\/(?:.+)\/addon)\/serializers\/(.+)\.(js)$/ },
-  { module: 'serializer-unit', exp: /^()tests\/unit\/serializers\/(.+)-test\.(js)$/ },
-  { module: 'serializer-integration', exp: /^()tests\/integration\/serializers\/(.+)-test\.(js)$/ },
-  { module: 'service', exp: /^(app|addon|lib\/(?:.+)\/addon)\/services\/(.+)\.(js)$/ },
-  { module: 'service-unit', exp: /^()tests\/unit\/services\/(.+)-test\.(js)$/ },
-  { module: 'service-integration', exp: /^()tests\/integration\/services\/(.+)-test\.(js)$/ },
-  { module: 'initializer', exp: /^(app|addon|lib\/(?:.+)\/addon)\/initializers\/(.+)\.(js)$/ },
-  { module: 'initializer-unit', exp: /^()tests\/unit\/initializers\/(.+)-test\.(js)$/ },
-  { module: 'initializer-integration', exp: /^()tests\/integration\/initializers\/(.+)-test\.(js)$/ }
+  { module: 'model', exp: /^(app|addon|lib\/(?:.+)\/addon)\/models\/(.+)\.(js|ts)$/ },
+  { module: 'model-unit', exp: /^()tests\/unit\/models\/(.+)-test\.(js|ts)$/ },
+  { module: 'model-integration', exp: /^()tests\/integration\/models\/(.+)-test\.(js|ts)$/ },
+  { module: 'util', exp: /^(app|addon|lib\/(?:.+)\/addon)\/utils\/(.+)\.(js|ts)$/ },
+  { module: 'util-unit', exp: /^()tests\/unit\/utils\/(.+)-test\.(js|ts)$/ },
+  { module: 'util-integration', exp: /^()tests\/integration\/utils\/(.+)-test\.(js|ts)$/ },
+  { module: 'helper', exp: /^(app|addon|lib\/(?:.+)\/addon)\/helpers\/(.+)\.(js|ts)$/ },
+  { module: 'helper-unit', exp: /^()tests\/unit\/helpers\/(.+)-test\.(js|ts)$/ },
+  { module: 'helper-integration', exp: /^()tests\/integration\/helpers\/(.+)-test\.(js|ts)$/ },
+  { module: 'mixin', exp: /^(app|addon|lib\/(?:.+)\/addon)\/mixins\/(.+)\.(js|ts)$/ },
+  { module: 'mixin-unit', exp: /^()tests\/unit\/mixins\/(.+)-test\.(js|ts)$/ },
+  { module: 'mixin-integration', exp: /^()tests\/integration\/mixins\/(.+)-test\.(js|ts)$/ },
+  { module: 'adapter', exp: /^(app|addon|lib\/(?:.+)\/addon)\/adapters\/(.+)\.(js|ts)$/ },
+  { module: 'adapter-unit', exp: /^()tests\/unit\/adapters\/(.+)-test\.(js|ts)$/ },
+  { module: 'adapter-integration', exp: /^()tests\/integration\/adapters\/(.+)-test\.(js|ts)$/ },
+  { module: 'serializer', exp: /^(app|addon|lib\/(?:.+)\/addon)\/serializers\/(.+)\.(js|ts)$/ },
+  { module: 'serializer-unit', exp: /^()tests\/unit\/serializers\/(.+)-test\.(js|ts)$/ },
+  { module: 'serializer-integration', exp: /^()tests\/integration\/serializers\/(.+)-test\.(js|ts)$/ },
+  { module: 'service', exp: /^(app|addon|lib\/(?:.+)\/addon)\/services\/(.+)\.(js|ts)$/ },
+  { module: 'service-unit', exp: /^()tests\/unit\/services\/(.+)-test\.(js|ts)$/ },
+  { module: 'service-integration', exp: /^()tests\/integration\/services\/(.+)-test\.(js|ts)$/ },
+  { module: 'initializer', exp: /^(app|addon|lib\/(?:.+)\/addon)\/initializers\/(.+)\.(js|ts)$/ },
+  { module: 'initializer-unit', exp: /^()tests\/unit\/initializers\/(.+)-test\.(js|ts)$/ },
+  { module: 'initializer-integration', exp: /^()tests\/integration\/initializers\/(.+)-test\.(js|ts)$/ }
 ]
 
 const HOST_TYPE_CACHE = {}
@@ -126,39 +129,50 @@ function pathToLabel (typeKey, filePath) {
 function typeKeyToLabel (typeKey) {
   switch (typeKey) {
     case 'component-js':
+    case 'component-ts':
       return 'Component'
 
     case 'component-style-scss':
       return 'Stylesheet'
 
     case 'route-js':
+    case 'route-ts':
       return 'Route'
 
     case 'controller-js':
+    case 'controller-ts':
       return 'Controller'
 
     case 'mixin-js':
+    case 'mixin-ts':
       return 'Mixin'
 
     case 'model-js':
+    case 'model-ts':
       return 'Model'
 
     case 'util-js':
+    case 'util-ts':
       return 'Util'
 
     case 'helper-js':
+    case 'helper-ts':
       return 'Helper'
 
     case 'adapter-js':
+    case 'adapter-ts':
       return 'Adapter'
 
     case 'serializer-js':
+    case 'serializer-ts':
       return 'Serializer'
 
     case 'service-js':
+    case 'service-ts':
       return 'Service'
 
     case 'initializer-js':
+    case 'initializer-ts':
       return 'Initializer'
 
     case 'component-template-hbs':
@@ -176,6 +190,17 @@ function typeKeyToLabel (typeKey) {
     case 'serializer-unit-js':
     case 'service-unit-js':
     case 'initializer-unit-js':
+    case 'component-unit-ts':
+    case 'route-unit-ts':
+    case 'controller-unit-ts':
+    case 'mixin-unit-ts':
+    case 'model-unit-ts':
+    case 'util-unit-ts':
+    case 'helper-unit-ts':
+    case 'adapter-unit-ts':
+    case 'serializer-unit-ts':
+    case 'service-unit-ts':
+    case 'initializer-unit-ts':
       return 'Unit Test'
 
     case 'component-integration-js':
@@ -189,6 +214,17 @@ function typeKeyToLabel (typeKey) {
     case 'serializer-integration-js':
     case 'service-integration-js':
     case 'initializer-integration-js':
+    case 'component-integration-ts':
+    case 'route-integration-ts':
+    case 'controller-integration-ts':
+    case 'mixin-integration-ts':
+    case 'model-integration-ts':
+    case 'util-integration-ts':
+    case 'helper-integration-ts':
+    case 'adapter-integration-ts':
+    case 'serializer-integration-ts':
+    case 'service-integration-ts':
+    case 'initializer-integration-ts':
       return 'Integration Test'
   }
 
@@ -223,7 +259,7 @@ async function findType (rootPath, type) {
     case 'serializer':
     case 'service':
     case 'util':
-      files = await globItems(rootPath, `+(app|addon)/${type}s/**/*.js`)
+      files = await globItems(rootPath, `+(app|addon)/${type}s/**/*.+(js|ts)`)
       break
   }
 
