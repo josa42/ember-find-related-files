@@ -21,11 +21,11 @@ const groups = [
 })
 
 const types = [
-  { module: 'pod-component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/component\.(js)$/ },
+  { module: 'pod-component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/component\.(js|ts)$/ },
   { module: 'pod-component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/template\.(hbs)$/ },
   { module: 'pod-component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/style\.(css|sass|scss)$/ },
-  { module: 'pod-component-unit', exp: /^()tests\/unit\/components\/(.+)\/component-test\.(js)$/ },
-  { module: 'pod-component-integration', exp: /^()tests\/integration\/components\/(.+)\/component-test\.(js)$/ },
+  { module: 'pod-component-unit', exp: /^()tests\/unit\/components\/(.+)\/component-test\.(js|ts)$/ },
+  { module: 'pod-component-integration', exp: /^()tests\/integration\/components\/(.+)\/component-test\.(js|ts)$/ },
   { module: 'component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\.(js|ts)$/ },
   { module: 'component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/templates\/components\/(.+)\.(hbs)$/ },
   { module: 'component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/styles\/components\/(.+)\.(css|sass|scss)$/ },
