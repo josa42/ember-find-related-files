@@ -5,7 +5,8 @@ const { describe, it } = global
 
 describe('Unit tests', () => {
   describe('getPath()', () => {
-    const source = { hostType: 'app', key: '', path: '', part: 'foo' }
+    const source = { hostType: 'app', key: '', path: '', part: 'foo', podPrefix: '' }
+    const sourceWithPodPrefix = { hostType: 'app', key: '', path: '', part: 'foo', podPrefix: 'pods' }
 
     it('Component paths', () => {
       assert.strictEqual(getPath(source, 'component-js'),             'app/components/foo.js')
@@ -22,6 +23,15 @@ describe('Unit tests', () => {
       assert.strictEqual(getPath(source, 'pod-component-style-sass'), 'app/components/foo/style.sass')
       assert.strictEqual(getPath(source, 'pod-component-unit-js'), 'tests/unit/components/foo/component-test.js')
       assert.strictEqual(getPath(source, 'pod-component-integration-js'), 'tests/integration/components/foo/component-test.js')
+    })
+
+    it('Pod Components with prefix paths', () => {
+      assert.strictEqual(getPath(sourceWithPodPrefix, 'pod-component-js'), 'app/pods/components/foo/component.js')
+      assert.strictEqual(getPath(sourceWithPodPrefix, 'pod-component-template-hbs'), 'app/pods/components/foo/template.hbs')
+      assert.strictEqual(getPath(sourceWithPodPrefix, 'pod-component-style-scss'), 'app/pods/components/foo/style.scss')
+      assert.strictEqual(getPath(sourceWithPodPrefix, 'pod-component-style-sass'), 'app/pods/components/foo/style.sass')
+      assert.strictEqual(getPath(sourceWithPodPrefix, 'pod-component-unit-js'), 'tests/unit/pods/components/foo/component-test.js')
+      assert.strictEqual(getPath(sourceWithPodPrefix, 'pod-component-integration-js'), 'tests/integration/pods/components/foo/component-test.js')
     })
 
     it('Controller paths', () => {

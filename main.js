@@ -107,16 +107,15 @@ function getRelatedTypeKeys (typeKey) {
 }
 
 function getPath (sourceType, typeKey) {
-  const { hostType, part } = sourceType
+  const { hostType, part, podPrefix } = sourceType
   const [, , pod, type, , subtype, ext] = typeKey.match(/^((pod)-)?([a-z]+)(-([a-z]+))?-([a-z]+)$/)
-
   if (pod) {
     switch (subtype) {
       case 'integration':
       case 'unit':
-        return `tests/${subtype}/${type}s/${part}/${type}-test.${ext}`
+        return `tests/${subtype}${podPrefix ? '/' + podPrefix : ''}/${type}s/${part}/${type}-test.${ext}`
       default:
-        return `${hostType}/components/${part}/${subtype || type}.${ext}`
+        return `${hostType}${podPrefix ? '/' + podPrefix : ''}/components/${part}/${subtype || type}.${ext}`
     }
   } else {
     switch (subtype) {
@@ -138,7 +137,16 @@ function getPath (sourceType, typeKey) {
 }
 
 function pathToLabel (typeKey, filePath) {
-  const typeDef = types.find(({ module }) => module === typeKey)
+  // first check if it is pod, checking component directly would give a wrong result
+  let typeDef = types.find(({ module }) => module === 'pod-' + typeKey)
+  if (typeDef) {
+    const match = filePath.match(typeDef.exp)
+    if (match) {
+      return match[3]
+    }
+  }
+
+  typeDef = types.find(({ module }) => module === typeKey)
   if (typeDef) {
     const match = filePath.match(typeDef.exp)
     if (match) {
