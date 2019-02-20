@@ -21,11 +21,11 @@ const groups = [
 })
 
 const types = [
-  { module: 'pod-component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/component\.(js|ts)$/ },
-  { module: 'pod-component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/template\.(hbs)$/ },
-  { module: 'pod-component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/style\.(css|sass|scss)$/ },
-  { module: 'pod-component-unit', exp: /^()tests\/unit\/components\/(.+)\/component-test\.(js|ts)$/ },
-  { module: 'pod-component-integration', exp: /^()tests\/integration\/components\/(.+)\/component-test\.(js|ts)$/ },
+  { module: 'pod-component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/?(.*)\/components\/(.+)\/component\.(js|ts)$/ },
+  { module: 'pod-component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/?(.*)\/components\/(.+)\/template\.(hbs)$/ },
+  { module: 'pod-component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/?(.*)\/components\/(.+)\/style\.(css|sass|scss)$/ },
+  { module: 'pod-component-unit', exp: /^()tests\/unit\/?(.*)\/components\/(.+)\/component-test\.(js|ts)$/ },
+  { module: 'pod-component-integration', exp: /^()tests\/integration\/?(.*)\/components\/(.+)\/component-test\.(js|ts)$/ },
   { module: 'component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\.(js|ts)$/ },
   { module: 'component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/templates\/components\/(.+)\.(hbs)$/ },
   { module: 'component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/styles\/components\/(.+)\.(css|sass|scss)$/ },
@@ -82,10 +82,19 @@ function detectType (rootPath, filePath) {
 
       if (m) {
         const hostType = m[1] || detectHostType(rootPath)
-        const part = m[2]
-        const ext = m[3]
+        // pods have an additional prefix
+        if (type.module.startsWith('pod-')) {
+          const podPrefix = m[2]
+          const part = m[3]
+          const ext = m[4]
 
-        return { hostType, path: filePath, part, key: `${type.module}-${ext}` }
+          return { hostType, path: filePath, part, key: `${type.module}-${ext}`, podPrefix }
+        } else {
+          const part = m[2]
+          const ext = m[3]
+
+          return { hostType, path: filePath, part, key: `${type.module}-${ext}` }
+        }
       }
     })
     .find((type) => Boolean(type))
@@ -280,7 +289,7 @@ async function findType (rootPath, type) {
     case 'serializer':
     case 'service':
     case 'util':
-      files = await globItems(rootPath, `+(app|addon)/${type}s/**/*.+(js|ts)`)
+      files = await globItems(rootPath, `+(app|addon)/**/${type}s/**/*.+(js|ts)`)
       break
   }
 

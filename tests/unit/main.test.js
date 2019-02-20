@@ -96,12 +96,21 @@ describe('Unit tests', () => {
     })
 
     it('Pod Component and related types', () => {
-      assert.deepStrictEqual(detectType('/foo', 'app/components/foo/component.js'),                     { hostType: 'app', path: 'app/components/foo/component.js', part: 'foo', key: 'pod-component-js' })
-      assert.deepStrictEqual(detectType('/foo', 'app/components/foo/template.hbs'),                     { hostType: 'app', path: 'app/components/foo/template.hbs', part: 'foo', key: 'pod-component-template-hbs' })
-      assert.deepStrictEqual(detectType('/foo', 'app/components/foo/style.scss'),                       { hostType: 'app', path: 'app/components/foo/style.scss', part: 'foo', key: 'pod-component-style-scss' })
-      assert.deepStrictEqual(detectType('/foo', 'app/components/foo/style.sass'),                       { hostType: 'app', path: 'app/components/foo/style.sass', part: 'foo', key: 'pod-component-style-sass' })
-      assert.deepStrictEqual(detectType('/foo', 'tests/unit/components/foo/component-test.js'),         { hostType: 'app', path: 'tests/unit/components/foo/component-test.js', part: 'foo', key: 'pod-component-unit-js' })
-      assert.deepStrictEqual(detectType('/foo', 'tests/integration/components/foo/component-test.js'),  { hostType: 'app', path: 'tests/integration/components/foo/component-test.js', part: 'foo', key: 'pod-component-integration-js' })
+      assert.deepStrictEqual(detectType('/foo', 'app/components/foo/component.js'),                     { hostType: 'app', path: 'app/components/foo/component.js', part: 'foo', key: 'pod-component-js', podPrefix: '' })
+      assert.deepStrictEqual(detectType('/foo', 'app/components/foo/template.hbs'),                     { hostType: 'app', path: 'app/components/foo/template.hbs', part: 'foo', key: 'pod-component-template-hbs', podPrefix: '' })
+      assert.deepStrictEqual(detectType('/foo', 'app/components/foo/style.scss'),                       { hostType: 'app', path: 'app/components/foo/style.scss', part: 'foo', key: 'pod-component-style-scss', podPrefix: '' })
+      assert.deepStrictEqual(detectType('/foo', 'app/components/foo/style.sass'),                       { hostType: 'app', path: 'app/components/foo/style.sass', part: 'foo', key: 'pod-component-style-sass', podPrefix: '' })
+      assert.deepStrictEqual(detectType('/foo', 'tests/unit/components/foo/component-test.js'),         { hostType: 'app', path: 'tests/unit/components/foo/component-test.js', part: 'foo', key: 'pod-component-unit-js', podPrefix: '' })
+      assert.deepStrictEqual(detectType('/foo', 'tests/integration/components/foo/component-test.js'),  { hostType: 'app', path: 'tests/integration/components/foo/component-test.js', part: 'foo', key: 'pod-component-integration-js', podPrefix: '' })
+    })
+
+    it('Pod Component with prefix and related types', () => {
+      assert.deepStrictEqual(detectType('/foo', 'app/pods/components/foo/component.js'),                    { hostType: 'app', path: 'app/pods/components/foo/component.js', part: 'foo', key: 'pod-component-js', podPrefix: 'pods' })
+      assert.deepStrictEqual(detectType('/foo', 'app/pods/components/foo/template.hbs'),                    { hostType: 'app', path: 'app/pods/components/foo/template.hbs', part: 'foo', key: 'pod-component-template-hbs', podPrefix: 'pods' })
+      assert.deepStrictEqual(detectType('/foo', 'app/pods/components/foo/style.scss'),                      { hostType: 'app', path: 'app/pods/components/foo/style.scss', part: 'foo', key: 'pod-component-style-scss', podPrefix: 'pods' })
+      assert.deepStrictEqual(detectType('/foo', 'app/pods/components/foo/style.sass'),                      { hostType: 'app', path: 'app/pods/components/foo/style.sass', part: 'foo', key: 'pod-component-style-sass', podPrefix: 'pods' })
+      assert.deepStrictEqual(detectType('/foo', 'tests/unit/pods/components/foo/component-test.js'),        { hostType: 'app', path: 'tests/unit/pods/components/foo/component-test.js', part: 'foo', key: 'pod-component-unit-js', podPrefix: 'pods' })
+      assert.deepStrictEqual(detectType('/foo', 'tests/integration/pods/components/foo/component-test.js'), { hostType: 'app', path: 'tests/integration/pods/components/foo/component-test.js', part: 'foo', key: 'pod-component-integration-js', podPrefix: 'pods' })
     })
 
     it('Route and related types', () => {
