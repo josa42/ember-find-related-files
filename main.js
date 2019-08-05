@@ -99,7 +99,7 @@ function getRelatedTypeKeys (typeKey) {
 
 function getPath (sourceType, typeKey) {
   const { hostType, part } = sourceType
-  const [ , , pod, type, , subtype, ext ] = typeKey.match(/^((pod)-)?([a-z]+)(-([a-z]+))?-([a-z]+)$/)
+  const [, , pod, type, , subtype, ext] = typeKey.match(/^((pod)-)?([a-z]+)(-([a-z]+))?-([a-z]+)$/)
 
   if (pod) {
     switch (subtype) {
