@@ -7,6 +7,7 @@
     "test": "eslint . && mocha tests/**/*.test.js",
     "report-coverage": "nyc mocha --reporter min tests/**/*.test.js > /dev/null && nyc report --reporter=lcov > coverage.lcov && codecov"
   },
+  "engines" : { "node" : ">=8" },
   "author": "Josa Gesell <josa@gesell.me>",
   "license": "MIT",
   "devDependencies": {
