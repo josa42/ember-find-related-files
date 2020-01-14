@@ -21,11 +21,11 @@ const groups = [
 })
 
 const types = [
-  { module: 'pod-component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/component\.(js|ts)$/ },
-  { module: 'pod-component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/template\.(hbs)$/ },
-  { module: 'pod-component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/style\.(css|sass|scss)$/ },
-  { module: 'pod-component-unit', exp: /^()tests\/unit\/components\/(.+)\/component-test\.(js|ts)$/ },
-  { module: 'pod-component-integration', exp: /^()tests\/integration\/components\/(.+)\/component-test\.(js|ts)$/ },
+  { module: 'pod-component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/?(.*)\/components\/(.+)\/component\.(js|ts)$/ },
+  { module: 'pod-component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/?(.*)\/components\/(.+)\/template\.(hbs)$/ },
+  { module: 'pod-component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/?(.*)\/components\/(.+)\/style\.(css|sass|scss)$/ },
+  { module: 'pod-component-unit', exp: /^()tests\/unit\/?(.*)\/components\/(.+)\/component-test\.(js|ts)$/ },
+  { module: 'pod-component-integration', exp: /^()tests\/integration\/?(.*)\/components\/(.+)\/component-test\.(js|ts)$/ },
   { module: 'component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\.(js|ts)$/ },
   { module: 'component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/templates\/components\/(.+)\.(hbs)$/ },
   { module: 'component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/styles\/components\/(.+)\.(css|sass|scss)$/ },
@@ -82,10 +82,19 @@ function detectType (rootPath, filePath) {
 
       if (m) {
         const hostType = m[1] || detectHostType(rootPath)
-        const part = m[2]
-        const ext = m[3]
+        // pods have an additional prefix
+        if (type.module.startsWith('pod-')) {
+          const podPrefix = m[2]
+          const part = m[3]
+          const ext = m[4]
 
-        return { hostType, path: filePath, part, key: `${type.module}-${ext}` }
+          return { hostType, path: filePath, part, key: `${type.module}-${ext}`, podPrefix }
+        } else {
+          const part = m[2]
+          const ext = m[3]
+
+          return { hostType, path: filePath, part, key: `${type.module}-${ext}` }
+        }
       }
     })
     .find((type) => Boolean(type))
@@ -98,16 +107,15 @@ function getRelatedTypeKeys (typeKey) {
 }
 
 function getPath (sourceType, typeKey) {
-  const { hostType, part } = sourceType
+  const { hostType, part, podPrefix } = sourceType
   const [, , pod, type, , subtype, ext] = typeKey.match(/^((pod)-)?([a-z]+)(-([a-z]+))?-([a-z]+)$/)
-
   if (pod) {
     switch (subtype) {
       case 'integration':
       case 'unit':
-        return `tests/${subtype}/${type}s/${part}/${type}-test.${ext}`
+        return `tests/${subtype}${podPrefix ? '/' + podPrefix : ''}/${type}s/${part}/${type}-test.${ext}`
       default:
-        return `${hostType}/components/${part}/${subtype || type}.${ext}`
+        return `${hostType}${podPrefix ? '/' + podPrefix : ''}/components/${part}/${subtype || type}.${ext}`
     }
   } else {
     switch (subtype) {
@@ -129,7 +137,16 @@ function getPath (sourceType, typeKey) {
 }
 
 function pathToLabel (typeKey, filePath) {
-  const typeDef = types.find(({ module }) => module === typeKey)
+  // first check if it is pod, checking component directly would give a wrong result
+  let typeDef = types.find(({ module }) => module === 'pod-' + typeKey)
+  if (typeDef) {
+    const match = filePath.match(typeDef.exp)
+    if (match) {
+      return match[3]
+    }
+  }
+
+  typeDef = types.find(({ module }) => module === typeKey)
   if (typeDef) {
     const match = filePath.match(typeDef.exp)
     if (match) {
@@ -280,7 +297,7 @@ async function findType (rootPath, type) {
     case 'serializer':
     case 'service':
     case 'util':
-      files = await globItems(rootPath, `+(app|addon)/${type}s/**/*.+(js|ts)`)
+      files = await globItems(rootPath, `+(app|addon)/**/${type}s/**/*.+(js|ts)`)
       break
   }
 

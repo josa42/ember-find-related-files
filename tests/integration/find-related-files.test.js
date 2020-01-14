@@ -119,6 +119,71 @@ describe('Integration tests - findRelatedFiles()', () => {
     })
   })
 
+  describe('Pod Component with prefix', () => {
+    it('works for implementations', () => {
+      assert.deepStrictEqual(findRelatedFiles(appRoot, 'app/pods/components/bar/component.js'), [
+        { label: 'Template',         path: 'app/pods/components/bar/template.hbs' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.css' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.sass' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.scss' },
+        { label: 'Unit Test',        path: 'tests/unit/pods/components/bar/component-test.js' },
+        { label: 'Integration Test', path: 'tests/integration/pods/components/bar/component-test.js' }
+      ])
+    })
+
+    it('works for templates', () => {
+      assert.deepStrictEqual(findRelatedFiles(appRoot, 'app/pods/components/bar/template.hbs'), [
+        { label: 'Component',        path: 'app/pods/components/bar/component.js' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.css' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.sass' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.scss' },
+        { label: 'Unit Test',        path: 'tests/unit/pods/components/bar/component-test.js' },
+        { label: 'Integration Test', path: 'tests/integration/pods/components/bar/component-test.js' }
+      ])
+    })
+
+    it('works for styles', () => {
+      assert.deepStrictEqual(findRelatedFiles(appRoot, 'app/pods/components/bar/style.sass'), [
+        { label: 'Component',        path: 'app/pods/components/bar/component.js' },
+        { label: 'Template',         path: 'app/pods/components/bar/template.hbs' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.css' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.scss' },
+        { label: 'Unit Test',        path: 'tests/unit/pods/components/bar/component-test.js' },
+        { label: 'Integration Test', path: 'tests/integration/pods/components/bar/component-test.js' }
+      ])
+      assert.deepStrictEqual(findRelatedFiles(appRoot, 'app/pods/components/bar/style.scss'), [
+        { label: 'Component',        path: 'app/pods/components/bar/component.js' },
+        { label: 'Template',         path: 'app/pods/components/bar/template.hbs' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.css' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.sass' },
+        { label: 'Unit Test',        path: 'tests/unit/pods/components/bar/component-test.js' },
+        { label: 'Integration Test', path: 'tests/integration/pods/components/bar/component-test.js' }
+      ])
+    })
+
+    it('works for unit tests', () => {
+      assert.deepStrictEqual(findRelatedFiles(appRoot, 'tests/unit/pods/components/bar/component-test.js'), [
+        { label: 'Component',        path: 'app/pods/components/bar/component.js' },
+        { label: 'Template',         path: 'app/pods/components/bar/template.hbs' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.css' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.sass' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.scss' },
+        { label: 'Integration Test', path: 'tests/integration/pods/components/bar/component-test.js' }
+      ])
+    })
+
+    it('works for integration test', () => {
+      assert.deepStrictEqual(findRelatedFiles(appRoot, 'tests/integration/pods/components/bar/component-test.js'), [
+        { label: 'Component',        path: 'app/pods/components/bar/component.js' },
+        { label: 'Template',         path: 'app/pods/components/bar/template.hbs' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.css' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.sass' },
+        { label: 'Stylesheet',       path: 'app/pods/components/bar/style.scss' },
+        { label: 'Unit Test',        path: 'tests/unit/pods/components/bar/component-test.js' }
+      ])
+    })
+  })
+
   describe('Route', () => {
     it('works for implementations', () => {
       assert.deepStrictEqual(findRelatedFiles(appRoot, 'app/routes/foo-bar.js'), [

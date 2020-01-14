@@ -10,9 +10,12 @@ const { describe, it } = global
 describe('Integration tests - findType()', () => {
   it('works for Component in apps', async () => {
     assert.deepStrictEqual(await findType(appRoot, 'component'), [
-      { label: 'bar/component',             path: 'app/components/bar/component.js' },
+      { label: 'bar',             path: 'app/components/bar/component.js' },
+      { label: 'bar/foo',         path: 'app/components/bar/foo/component.js' },
       { label: 'example/foo-bar', path: 'app/components/example/foo-bar.js' },
-      { label: 'foo-bar',         path: 'app/components/foo-bar.js' }
+      { label: 'foo-bar',         path: 'app/components/foo-bar.js' },
+      { label: 'bar',             path: 'app/pods/components/bar/component.js' },
+      { label: 'bar/foo',         path: 'app/pods/components/bar/foo/component.js' }
     ])
   })
 
