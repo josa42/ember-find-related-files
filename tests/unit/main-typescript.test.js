@@ -10,6 +10,7 @@ describe('Unit tests', () => {
     it('Component paths', () => {
       assert.strictEqual(getPath(source, 'component-ts'),             'app/components/foo.ts')
       assert.strictEqual(getPath(source, 'component-template-hbs'),   'app/templates/components/foo.hbs')
+      assert.strictEqual(getPath(source, 'component-octane-template-hbs'), 'app/components/foo.hbs')
       assert.strictEqual(getPath(source, 'component-style-scss'),     'app/styles/components/foo.scss')
       assert.strictEqual(getPath(source, 'component-unit-ts'),        'tests/unit/components/foo-test.ts')
       assert.strictEqual(getPath(source, 'component-integration-ts'), 'tests/integration/components/foo-test.ts')
@@ -81,6 +82,7 @@ describe('Unit tests', () => {
     it('Component and related types', () => {
       assert.deepStrictEqual(detectType('/foo', 'app/components/foo.ts'),                     { hostType: 'app', path: 'app/components/foo.ts', part: 'foo', key: 'component-ts' })
       assert.deepStrictEqual(detectType('/foo', 'app/templates/components/foo.hbs'),          { hostType: 'app', path: 'app/templates/components/foo.hbs', part: 'foo', key: 'component-template-hbs' })
+      assert.deepStrictEqual(detectType('/foo', 'app/components/foo.hbs'),                    { hostType: 'app', path: 'app/components/foo.hbs', part: 'foo', key: 'component-octane-template-hbs' })
       assert.deepStrictEqual(detectType('/foo', 'app/styles/components/foo.scss'),            { hostType: 'app', path: 'app/styles/components/foo.scss', part: 'foo', key: 'component-style-scss' })
       assert.deepStrictEqual(detectType('/foo', 'tests/unit/components/foo-test.ts'),         { hostType: 'app', path: 'tests/unit/components/foo-test.ts', part: 'foo', key: 'component-unit-ts' })
       assert.deepStrictEqual(detectType('/foo', 'tests/integration/components/foo-test.ts'),  { hostType: 'app', path: 'tests/integration/components/foo-test.ts', part: 'foo', key: 'component-integration-ts' })
@@ -150,7 +152,7 @@ describe('Unit tests', () => {
 
   describe('getRelatedTypeKeys()', () => {
     it('Component and related types', () => {
-      const types = ['component-js', 'component-template-hbs', 'component-style-css', 'component-style-sass', 'component-style-scss', 'component-unit-js', 'component-integration-js', 'component-ts', 'component-unit-ts', 'component-integration-ts']
+      const types = ['component-js', 'component-template-hbs', 'component-octane-template-hbs', 'component-style-css', 'component-style-sass', 'component-style-scss', 'component-unit-js', 'component-integration-js', 'component-ts', 'component-unit-ts', 'component-integration-ts']
       types.forEach((type) => {
         assert.deepStrictEqual(getRelatedTypeKeys(type), types.filter((iType) => iType !== type))
       })
