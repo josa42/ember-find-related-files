@@ -7,7 +7,7 @@ const { join } = require('path')
 
 const groups = [
   ['pod-component-js', 'pod-component-template-hbs', 'pod-component-style-css', 'pod-component-style-sass', 'pod-component-style-scss', 'pod-component-unit-js', 'pod-component-integration-js'],
-  ['component-js', 'component-template-hbs', 'component-style-css', 'component-style-sass', 'component-style-scss', 'component-unit-js', 'component-integration-js'],
+  ['component-js', 'component-template-hbs', 'component-octane-template-hbs', 'component-style-css', 'component-style-sass', 'component-style-scss', 'component-unit-js', 'component-integration-js'],
   ['controller-js', 'controller-template-hbs', 'route-js', 'controller-unit-js', 'controller-integration-js', 'route-unit-js', 'route-integration-js'],
   ['mixin-js', 'mixin-unit-js', 'mixin-integration-js'],
   ['model-js', 'model-unit-js', 'model-integration-js', 'adapter-js', 'adapter-unit-js', 'adapter-integration-js', 'serializer-js', 'serializer-unit-js', 'serializer-integration-js'],
@@ -28,6 +28,7 @@ const types = [
   { module: 'pod-component-integration', exp: /^()tests\/integration\/components\/(.+)\/component-test\.(js|ts)$/ },
   { module: 'component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\.(js|ts)$/ },
   { module: 'component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/templates\/components\/(.+)\.(hbs)$/ },
+  { module: 'component-octane-template-hbs', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\.(hbs)$/ },
   { module: 'component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/styles\/components\/(.+)\.(css|sass|scss)$/ },
   { module: 'component-unit', exp: /^()tests\/unit\/components\/(.+)-test\.(js|ts)$/ },
   { module: 'component-integration', exp: /^()tests\/integration\/components\/(.+)-test\.(js|ts)$/ },
@@ -195,6 +196,7 @@ function typeKeyToLabel (typeKey) {
 
     case 'pod-component-template-hbs':
     case 'component-template-hbs':
+    case 'component-octane-template-hbs':
     case 'controller-template-hbs':
       return 'Template'
 
