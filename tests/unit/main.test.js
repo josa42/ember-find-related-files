@@ -175,7 +175,7 @@ describe('Unit tests', () => {
     })
 
     it('Pod Component and related types', () => {
-      const types = ['pod-component-js', 'pod-component-template-hbs', 'pod-component-style-css', 'pod-component-style-sass', 'pod-component-style-scss', 'pod-component-unit-js', 'pod-component-integration-js', 'pod-component-ts', 'pod-component-unit-ts', 'pod-component-integration-ts']
+      const types = ['indexed-pod-component-js', 'indexed-pod-component-template-hbs', 'indexed-pod-component-style-scss', 'indexed-pod-component-style-css', 'indexed-pod-component-style-sass', 'pod-component-js', 'pod-component-template-hbs', 'pod-component-style-css', 'pod-component-style-sass', 'pod-component-style-scss', 'pod-component-unit-js', 'pod-component-integration-js', 'indexed-pod-component-ts', 'pod-component-ts', 'pod-component-unit-ts', 'pod-component-integration-ts']
       types.forEach((type) => {
         assert.deepStrictEqual(getRelatedTypeKeys(type), types.filter((iType) => iType !== type))
       })

@@ -11,6 +11,7 @@ describe('Integration tests - findType()', () => {
   it('works for Component in apps', async () => {
     assert.deepStrictEqual(await findType(appRoot, 'component'), [
       { label: 'example/foo-bar', path: 'app/components/example/foo-bar.ts' },
+      { label: 'example/index',   path: 'app/components/example/index.ts' },
       { label: 'foo-bar',         path: 'app/components/foo-bar.ts' }
     ])
   })
