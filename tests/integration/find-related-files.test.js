@@ -55,68 +55,33 @@ describe('Integration tests - findRelatedFiles()', () => {
   })
 
   describe('Pod Component', () => {
-    it('works for implementations', () => {
-      assert.deepStrictEqual(findRelatedFiles(appRoot, 'app/components/bar/component.js'), [
-        { label: 'Template',         path: 'app/components/bar/template.hbs' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.css' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.sass' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.scss' },
-        { label: 'Unit Test',        path: 'tests/unit/components/bar/component-test.js' },
-        { label: 'Integration Test', path: 'tests/integration/components/bar/component-test.js' }
-      ])
-    })
+    const fileTargets = [
+      { label: 'Component',        path: 'app/components/bar/component.js' },
+      { label: 'Component',        path: 'app/components/bar/index.js' },
+      { label: 'Template',         path: 'app/components/bar/index.hbs' },
+      { label: 'Stylesheet',       path: 'app/components/bar/index.scss' },
+      { label: 'Stylesheet',       path: 'app/components/bar/index.sass' },
+      { label: 'Stylesheet',       path: 'app/components/bar/index.css' },
+      { label: 'Integration Test', path: 'tests/integration/components/bar/component-test.js' },
+      { label: 'Template',         path: 'app/components/bar/template.hbs' },
+      { label: 'Stylesheet',       path: 'app/components/bar/style.css' },
+      { label: 'Stylesheet',       path: 'app/components/bar/style.sass' },
+      { label: 'Stylesheet',       path: 'app/components/bar/style.scss' },
+      { label: 'Unit Test',        path: 'tests/unit/components/bar/component-test.js' }
+    ]
 
-    it('works for templates', () => {
-      assert.deepStrictEqual(findRelatedFiles(appRoot, 'app/components/bar/template.hbs'), [
-        { label: 'Component',        path: 'app/components/bar/component.js' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.css' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.sass' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.scss' },
-        { label: 'Unit Test',        path: 'tests/unit/components/bar/component-test.js' },
-        { label: 'Integration Test', path: 'tests/integration/components/bar/component-test.js' }
-      ])
-    })
+    for (const currentFile of fileTargets) {
+      it(`works for ${currentFile.label} at ${currentFile.path}`, () => {
+        const relatedFiles = findRelatedFiles(appRoot, currentFile.path)
 
-    it('works for styles', () => {
-      assert.deepStrictEqual(findRelatedFiles(appRoot, 'app/components/bar/style.sass'), [
-        { label: 'Component',        path: 'app/components/bar/component.js' },
-        { label: 'Template',         path: 'app/components/bar/template.hbs' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.css' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.scss' },
-        { label: 'Unit Test',        path: 'tests/unit/components/bar/component-test.js' },
-        { label: 'Integration Test', path: 'tests/integration/components/bar/component-test.js' }
-      ])
-      assert.deepStrictEqual(findRelatedFiles(appRoot, 'app/components/bar/style.scss'), [
-        { label: 'Component',        path: 'app/components/bar/component.js' },
-        { label: 'Template',         path: 'app/components/bar/template.hbs' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.css' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.sass' },
-        { label: 'Unit Test',        path: 'tests/unit/components/bar/component-test.js' },
-        { label: 'Integration Test', path: 'tests/integration/components/bar/component-test.js' }
-      ])
-    })
+        assert.strictEqual(relatedFiles.find(f => f.path === currentFile.path), undefined)
+        assert.strictEqual(relatedFiles.length, fileTargets.length - 1)
 
-    it('works for unit tests', () => {
-      assert.deepStrictEqual(findRelatedFiles(appRoot, 'tests/unit/components/bar/component-test.js'), [
-        { label: 'Component',        path: 'app/components/bar/component.js' },
-        { label: 'Template',         path: 'app/components/bar/template.hbs' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.css' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.sass' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.scss' },
-        { label: 'Integration Test', path: 'tests/integration/components/bar/component-test.js' }
-      ])
-    })
-
-    it('works for integration test', () => {
-      assert.deepStrictEqual(findRelatedFiles(appRoot, 'tests/integration/components/bar/component-test.js'), [
-        { label: 'Component',        path: 'app/components/bar/component.js' },
-        { label: 'Template',         path: 'app/components/bar/template.hbs' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.css' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.sass' },
-        { label: 'Stylesheet',       path: 'app/components/bar/style.scss' },
-        { label: 'Unit Test',        path: 'tests/unit/components/bar/component-test.js' }
-      ])
-    })
+        for (const relatedFile of relatedFiles) {
+          assert.ok(fileTargets.find(f => f.path === relatedFile.path))
+        }
+      })
+    }
   })
 
   describe('Route', () => {

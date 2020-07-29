@@ -6,7 +6,7 @@ const glob = require('glob')
 const { join } = require('path')
 
 const groups = [
-  ['pod-component-js', 'pod-component-template-hbs', 'pod-component-style-css', 'pod-component-style-sass', 'pod-component-style-scss', 'pod-component-unit-js', 'pod-component-integration-js'],
+  ['indexed-pod-component-js', 'indexed-pod-component-template-hbs', 'indexed-pod-component-style-scss', 'indexed-pod-component-style-css', 'indexed-pod-component-style-sass', 'pod-component-js', 'pod-component-template-hbs', 'pod-component-style-css', 'pod-component-style-sass', 'pod-component-style-scss', 'pod-component-unit-js', 'pod-component-integration-js'],
   ['component-js', 'component-template-hbs', 'component-style-css', 'component-style-sass', 'component-style-scss', 'component-unit-js', 'component-integration-js'],
   ['controller-js', 'controller-template-hbs', 'route-js', 'controller-unit-js', 'controller-integration-js', 'route-unit-js', 'route-integration-js'],
   ['mixin-js', 'mixin-unit-js', 'mixin-integration-js'],
@@ -26,6 +26,9 @@ const types = [
   { module: 'pod-component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/style\.(css|sass|scss)$/ },
   { module: 'pod-component-unit', exp: /^()tests\/unit\/components\/(.+)\/component-test\.(js|ts)$/ },
   { module: 'pod-component-integration', exp: /^()tests\/integration\/components\/(.+)\/component-test\.(js|ts)$/ },
+  { module: 'indexed-pod-component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/index\.(js)$/ },
+  { module: 'indexed-pod-component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/index\.(hbs)$/ },
+  { module: 'indexed-pod-component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/index\.(css|sass|scss)$/ },
   { module: 'component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\.(js|ts)$/ },
   { module: 'component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/templates\/components\/(.+)\.(hbs)$/ },
   { module: 'component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/styles\/components\/(.+)\.(css|sass|scss)$/ },
@@ -99,15 +102,18 @@ function getRelatedTypeKeys (typeKey) {
 
 function getPath (sourceType, typeKey) {
   const { hostType, part } = sourceType
-  const [, , pod, type, , subtype, ext] = typeKey.match(/^((pod)-)?([a-z]+)(-([a-z]+))?-([a-z]+)$/)
+  const [, , pod, type, , subtype, ext] = typeKey.match(/^((indexed-pod|pod)-)?([a-z]+)(-([a-z]+))?-([a-z]+)$/)
 
   if (pod) {
+    const indexed = pod === 'indexed-pod'
     switch (subtype) {
       case 'integration':
       case 'unit':
         return `tests/${subtype}/${type}s/${part}/${type}-test.${ext}`
       default:
-        return `${hostType}/components/${part}/${subtype || type}.${ext}`
+        let fileName = subtype || type
+        if (indexed) fileName = 'index'
+        return `${hostType}/components/${part}/${fileName}.${ext}`
     }
   } else {
     switch (subtype) {
@@ -142,13 +148,17 @@ function pathToLabel (typeKey, filePath) {
 
 function typeKeyToLabel (typeKey) {
   switch (typeKey) {
+    case 'indexed-pod-component-js':
     case 'pod-component-js':
     case 'component-js':
     case 'component-ts':
       return 'Component'
 
+    case 'indexed-pod-component-style-scss':
     case 'pod-component-style-scss':
+    case 'indexed-pod-component-style-sass':
     case 'pod-component-style-sass':
+    case 'indexed-pod-component-style-css':
     case 'pod-component-style-css':
     case 'component-style-scss':
       return 'Stylesheet'
@@ -193,11 +203,13 @@ function typeKeyToLabel (typeKey) {
     case 'initializer-ts':
       return 'Initializer'
 
+    case 'indexed-pod-component-template-hbs':
     case 'pod-component-template-hbs':
     case 'component-template-hbs':
     case 'controller-template-hbs':
       return 'Template'
 
+    case 'indexed-pod-component-unit-js':
     case 'pod-component-unit-js':
     case 'component-unit-js':
     case 'route-unit-js':
@@ -223,6 +235,7 @@ function typeKeyToLabel (typeKey) {
     case 'initializer-unit-ts':
       return 'Unit Test'
 
+    case 'indexed-pod-component-integration-js':
     case 'pod-component-integration-js':
     case 'component-integration-js':
     case 'route-integration-js':
